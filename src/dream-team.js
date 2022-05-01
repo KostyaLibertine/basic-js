@@ -17,8 +17,7 @@ const { NotImplementedError } = require('../extensions/index.js');
 function createDreamTeam(members) {
   // throw new NotImplementedError('Not implemented');
   // remove line with error and write your code here
-  const correctNamesCheck = members.filter(d => typeof(d) != "string")
-  const correctNames = members.filter(e => typeof(e) === "string")
+  const correctNames = Array.isArray(members) ? members.filter(e => typeof(e) === "string") : []
   const deleteSpaces = correctNames.map(f => f.replaceAll(' ', ''))
   const firstLetters = deleteSpaces.map(g => g.slice(0, 1))
   const upperCase = firstLetters.map(h => h.toUpperCase())
@@ -26,8 +25,8 @@ function createDreamTeam(members) {
   const string = upperCase.toString()
   const withoutCommas = string.replaceAll(',', '')
 
-  if (correctNamesCheck === true) {
-    return correctNamesCheck
+  if (correctNames.length === 0) {
+    return false
   }
   else {
     return withoutCommas
