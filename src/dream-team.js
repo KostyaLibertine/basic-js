@@ -1,3 +1,4 @@
+const { interfaces } = require('mocha');
 const { NotImplementedError } = require('../extensions/index.js');
 
 /**
@@ -13,9 +14,17 @@ const { NotImplementedError } = require('../extensions/index.js');
  * createDreamTeam(['Olivia', 1111, 'Lily', 'Oscar', true, null]) => 'LOO'
  *
  */
-function createDreamTeam(/* members */) {
-  throw new NotImplementedError('Not implemented');
+function createDreamTeam(members) {
+  // throw new NotImplementedError('Not implemented');
   // remove line with error and write your code here
+  const correctNames = members.filter(e => typeof(e) === "string")
+  const deleteSpaces = correctNames.map(f => f.replaceAll(' ', ''))
+  const firstLetters = deleteSpaces.map(g => g.slice(0, 1))
+  const upperCase = firstLetters.map(h => h.toUpperCase())
+  upperCase.sort()
+  const string = upperCase.toString()
+  const withoutCommas = string.replaceAll(',', '')
+  return withoutCommas
 }
 
 module.exports = {
