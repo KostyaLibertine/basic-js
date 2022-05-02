@@ -20,13 +20,84 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  constructor(direct = true) {
+    this.direct = direct;
   }
-  decrypt() {
-    throw new NotImplementedError('Not implemented');
+
+  alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+  encrypt(message, key) {
+    // throw new NotImplementedError('Not implemented');
     // remove line with error and write your code here
+    if (typeof key !== 'string' || typeof message !== 'string') {
+      throw new Error ('Incorrect arguments!')
+    }
+
+    let sub = message.split('').map(item => item.toUpperCase()).filter(item => this.alphabet.includes(item)).join('')
+    key = key.split('').map(item => item.toUpperCase()).join('')
+    let tempResult = []
+    let result = []
+
+    for (let i = 0; i < sub.length; i++) {
+      let mark
+      let markKey
+      let markLetter
+      let messageLetter = sub[i]
+      let keyLetter
+
+      markLetter = this.alphabet.indexOf(messageLetter)
+      keyLetter = key[i % key.length]
+      markKey = this.alphabet.indexOf(keyLetter)
+      mark = (markLetter + markKey) % this.alphabet.length
+      tempResult.push(this.alphabet[mark])
+    }
+    tempResult = tempResult.reverse()
+    
+    for (let item of message) {
+      if (this.alphabet.includes(item.toUpperCase())) result.push(tempResult.pop())
+      else result.push(item)
+    }
+    
+    if (!this.direct) result = result.reverse()
+    
+    return result.join('')
+  }
+
+  decrypt(message, key) {
+    // throw new NotImplementedError('Not implemented');
+    // remove line with error and write your code here
+    if (typeof key !== 'string' || typeof message !== 'string') {
+        throw new Error ('Incorrect arguments!')
+    }
+
+    let sub = message.split('').map(item => item.toUpperCase()).filter(item => this.alphabet.includes(item)).join('')
+    key = key.split('').map(item => item.toUpperCase()).join('')
+    let tempResult = []
+    let result = []
+
+    for (let i = 0; i < sub.length; i++) {
+      let mark
+      let markKey
+      let markLetter
+      let messageLetter = sub[i]
+      let keyLetter
+
+      markLetter = this.alphabet.indexOf(messageLetter)
+      keyLetter = key[i % key.length]
+      markKey = this.alphabet.indexOf(keyLetter)
+      mark = (this.alphabet.length + markLetter - markKey) % this.alphabet.length
+      tempResult.push(this.alphabet[mark])
+    }
+    tempResult = tempResult.reverse()
+
+    for (let item of message) {
+      if (this.alphabet.includes(item.toUpperCase())) result.push(tempResult.pop())
+      else result.push(item)
+    }
+    
+    if (!this.direct) result = result.reverse()
+    
+    return result.join('')
   }
 }
 
